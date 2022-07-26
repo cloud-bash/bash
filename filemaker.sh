@@ -15,6 +15,8 @@ echo $filenamecount
 
 #echo ${#filenamearray[@]}
 
+#created another comment for demo
+
 
 # for i in ${filenamearray[@]}; do
 #   [[ "$i" =~ (${user})([0-9]+) ]]
