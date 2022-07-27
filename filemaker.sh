@@ -1,52 +1,25 @@
 #!/bin/bash
 
-user=`whoami`
-current=`ls -1 | grep -P "$user" | wc -l`
-numfiles=25
-goal=$(($current+$numfiles))
+#makes number of directories use inputs as an argument
+#if range of directories (00-quantity) is missing any numbers, remake them
+#repeating the script run with the same quantity each time will only create quantity maximum
+#for more directories increase the quantity
+#only works for 01-99
 
-filenamearray=`ls -1 | grep -P "${user}[0-9]+"`
-#echo $filenamearray
-filenamecount=`ls -1 | grep -P "${user}[0-9]+" | wc -l`
-echo $filenamecount
-filenumberarray=()
+quantity=$1
 
-#echo ${#filenamearray[@]}
-
-counter=00
-
-for i in ${filenamearray[@]}; do
-  echo $i
-  [[ "$i" =~ (${user})([0-9]+) ]] #regex sorting for user and index
-  if (( ${BASH_REMATCH[2]#0} == $counter )); then # the #0 forces decimal interpretation instead of octal
-    ((counter=counter+1))
-  echo $counter
+for i in $(seq 1 $numfiles); do
+  if [[ -e "$USER""0$i" || -e "$USER""$i" ]]; then
+    if [[ $i -lt 10 ]]; then
+      echo "$USER""0$i"" already exists"
+    else
+      echo "$USER""$i"" already exists"
+    fi
   else
-    echo "bash_rematch2 does not equal counter"
-    mkdir "${user}0${counter}"
+    if [[ $i -lt 10 ]]; then
+      mkdir "$USER""0$i"
+    else
+      mkdir "$USER""$i"
+    fi
   fi
-  filenumberarray+=(${BASH_REMATCH[2]}) #adds the index to the filenumberarray
 done
-
-echo ${filenumberarray[@]}
-
-
-
-# max=${filenumberarray[0]}
-# for n in "${filenumberarray[@]}" ; do
-#     ((n > max)) && max=$n
-# done
-# echo $max
-
-if (( $current < 10 )); then
-  until (( $current == 10 )); do
-  mkdir "${user}0${current}"
-  ((current=current+1))
-  done
-fi
-
-# while (( $current != $goal )); do
-#   # echo "${user}${current}"
-#   mkdir "${user}${current}"
-#   ((current=current+1))
-# done
