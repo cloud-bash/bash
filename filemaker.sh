@@ -8,7 +8,7 @@
 
 quantity=$1
 
-for i in $(seq 1 $numfiles); do
+for i in $(seq 1 "$quantity"); do
   if [[ -e "$USER""0$i" || -e "$USER""$i" ]]; then
     if [[ $i -lt 10 ]]; then
       echo "$USER""0$i"" already exists"
